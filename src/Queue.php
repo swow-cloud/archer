@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace SerendipitySwow\Archer;
 
 use Hyperf\Engine\Channel;
-use Serendipity\Job\Util\Coroutine;
+use Hyperf\Utils\Coroutine;
 
 class Queue
 {
