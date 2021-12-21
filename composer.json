@@ -1,11 +1,11 @@
 {
-    "name": "serendipity-swow/archer",
+    "name": "swow-cloud/archer",
     "description": "基于Swow的Task组件，支持多种模式。轻松实现协程Task的队列、并发、Defer | Swow coroutine task kit - Swoole Humanization Library",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "SerendipitySwow\\Archer\\": "src/"
+            "SwowCloud\\Archer\\": "src/"
         }
     },
     "keywords": [
@@ -32,14 +32,14 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "SerendipitySwowTest\\Archer\\": "tests/"
+            "SwowCloud\\ArcherTest\\": "tests/"
         }
     },
     "scripts": {
         "cs-fix": [ "@php vendor/bin/php-cs-fixer fix" ]
     },
     "support": {
-        "pull-request": "https://github.com/SerendipitySwow/archer/pulls",
-        "issues": "https://github.com/SerendipitySwow/archer/issues"
+        "pull-request": "https://github.com/SwowCloud/archer/pulls",
+        "issues": "https://github.com/SwowCloud/archer/issues"
     }
 }

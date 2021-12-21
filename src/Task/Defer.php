@@ -6,11 +6,11 @@
 
 declare(strict_types=1);
 
-namespace SerendipitySwow\Archer\Task;
+namespace SwowCloud\Archer\Task;
 
-use SerendipitySwow\Archer\Exception\ChannelPopException;
-use SerendipitySwow\Archer\Exception\TaskTimeoutException;
-use SerendipitySwow\Archer\Task;
+use SwowCloud\Archer\Exception\ChannelPopException;
+use SwowCloud\Archer\Exception\TaskTimeoutException;
+use SwowCloud\Archer\Task;
 use Swow\Channel;
 use Swow\Channel\Exception;
 

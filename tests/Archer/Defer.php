@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-use SerendipitySwow\Archer\Archer;
+use SwowCloud\ArcherTest\Archer;
 
 require_once(dirname(__DIR__)) . '/../vendor/autoload.php';
 Swow\Debug\Debugger::runOnTTY();

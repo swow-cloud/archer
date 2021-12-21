@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 require_once(dirname(__DIR__)) . '/../vendor/autoload.php';
 Swow\Debug\Debugger::runOnTTY();
-$container = \SerendipitySwow\Archer\Archer::getMultiTask(20);
+$container = \SwowCloud\Archer\Archer::getMultiTask(20);
 $callback = static function ($i) {
     sleep(1);
 

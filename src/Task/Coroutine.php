@@ -6,9 +6,9 @@
 
 declare(strict_types=1);
 
-namespace SerendipitySwow\Archer\Task;
+namespace SwowCloud\Archer\Task;
 
-use SerendipitySwow\Archer\Task;
+use SwowCloud\Archer\Task;
 use Swow\Channel;
 
 class Coroutine extends Task

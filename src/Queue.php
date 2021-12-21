@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace SerendipitySwow\Archer;
+namespace SwowCloud\Archer;
 
 use Hyperf\Engine\Channel;
 use Hyperf\Utils\Coroutine;

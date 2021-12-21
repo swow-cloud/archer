@@ -6,10 +6,10 @@
 
 declare(strict_types=1);
 
-namespace SerendipitySwow\Archer\Interfaces;
+namespace SwowCloud\Archer\Interfaces;
 
-use SerendipitySwow\Archer\Exception\AddNewTaskFailException;
-use SerendipitySwow\Archer\Exception\TaskTimeoutException;
+use SwowCloud\Archer\Exception\AddNewTaskFailException;
+use SwowCloud\Archer\Exception\TaskTimeoutException;
 
 interface ArcherInterface
 {

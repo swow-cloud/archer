@@ -6,10 +6,10 @@
 
 declare(strict_types=1);
 
-namespace SerendipitySwow\Archer\Task;
+namespace SwowCloud\Archer\Task;
 
 use Closure;
-use SerendipitySwow\Archer\Task;
+use SwowCloud\Archer\Task;
 use Throwable;
 
 class Async extends Task

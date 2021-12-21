@@ -6,12 +6,12 @@
 
 declare(strict_types=1);
 
-namespace SerendipitySwow\Archer;
+namespace SwowCloud\Archer;
 
 use ArrayObject;
 use Closure;
 use Hyperf\Engine\Coroutine as Co;
-use SerendipitySwow\Archer\Interfaces\TaskInterface;
+use SwowCloud\Archer\Interfaces\TaskInterface;
 use Throwable;
 
 abstract class Task implements TaskInterface

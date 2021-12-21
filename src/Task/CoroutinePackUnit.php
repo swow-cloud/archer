@@ -6,10 +6,10 @@
 
 declare(strict_types=1);
 
-namespace SerendipitySwow\Archer\Task;
+namespace SwowCloud\Archer\Task;
 
-use SerendipitySwow\Archer\MultiTask;
-use SerendipitySwow\Archer\Task;
+use SwowCloud\Archer\MultiTask;
+use SwowCloud\Archer\Task;
 
 class CoroutinePackUnit extends Task
 {

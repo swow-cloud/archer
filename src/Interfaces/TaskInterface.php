@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace SerendipitySwow\Archer\Interfaces;
+namespace SwowCloud\Archer\Interfaces;
 
 use Throwable;
 

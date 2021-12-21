@@ -29,9 +29,9 @@ composer require serendipity-swow/archer
 或者下载代码，并在autoloader中手动注册Archer：
 ```php
 $loader = include YOUR_BASE_PATH . '/vendor/autoload.php';
-$loader->setPsr4('SerendipitySwow\\Archer\\', YOUR_PATH . '/src/');
+$loader->setPsr4('SwowCloud\\Archer\\', YOUR_PATH . '/src/');
 $loader->addClassMap([
-    'SerendipitySwow\\Archer' => YOUR_PATH . '/src/Archer.php'
+    'SwowCloud\\Archer' => YOUR_PATH . '/src/Archer.php'
 ]);
 ```
 
@@ -58,8 +58,8 @@ Archer运行于全协程的场景中，禁忌同步阻塞代码的出现，会�
 ### 模式1：Defer模式 (即CSP模型)
 获取Task：
 ```php
-/*定义*/ \SerendipitySwow\Archer\Archer::taskDefer(callable $task_callback, ?array $params = null): \SerendipitySwow\Archer\Task\Defer;
-$task = \SerendipitySwow\Archer\Archer::taskDefer($task_callback, ['foo', 'bar']);
+/*定义*/ \SwowCloud\Archer\Archer::taskDefer(callable $task_callback, ?array $params = null): \SwowCloud\Archer\Task\Defer;
+$task = \SwowCloud\Archer\Archer::taskDefer($task_callback, ['foo', 'bar']);
 ```
 
 | 返回模式 | 异常处理 |
@@ -68,10 +68,10 @@ $task = \SerendipitySwow\Archer\Archer::taskDefer($task_callback, ['foo', 'bar']
 
 获取执行结果：
 ```php
-/*定义*/ \SerendipitySwow\Archer\Task\Defer->recv(?float $timeout = null);
+/*定义*/ \SwowCloud\Archer\Task\Defer->recv(?float $timeout = null);
 $task->recv(0.5);
 ```
-- `$timeout` 超时时间，超时后函数会直接抛出`SerendipitySwow\Archer\Exception\TaskTimeoutException`。注意：超时返回后Task仍会继续执行，不会中断，不会移出队列。若缺省则表示不会超时
+- `$timeout` 超时时间，超时后函数会直接抛出`SwowCloud\Archer\Exception\TaskTimeoutException`。注意：超时返回后Task仍会继续执行，不会中断，不会移出队列。若缺省则表示不会超时
 
 | 返回模式 | 异常处理 |
 | :-- | :-- |
@@ -80,7 +80,7 @@ $task->recv(0.5);
 获取容器：
 ```php
 // $max_concurrent表示集内最大并行数量，缺省表示不限制
-$container = \SerendipitySwow\Archer::getMultiTask(?int $max_concurrent = null);
+$container = \SwowCloud\Archer::getMultiTask(?int $max_concurrent = null);
 ```
 向队列投递Task并立即返回Task id。
 ```php
@@ -91,7 +91,7 @@ $container->addTask(callable $task_callback, ?array $params = null): int;
 ```php
 $container->waitForAll(?float $timeout = null): array;
 ```
-- `$timeout` 超时时间，超时后函数会直接抛出`SerendipitySwow\Archer\Exception\TaskTimeoutException`。注意：超时返回后所有Task仍会继续执行，不会中断，不会移出队列。若缺省则表示不会超时
+- `$timeout` 超时时间，超时后函数会直接抛出`SwowCloud\Archer\Exception\TaskTimeoutException`。注意：超时返回后所有Task仍会继续执行，不会中断，不会移出队列。若缺省则表示不会超时
 
 | 返回模式 | 异常处理 |
 | :-- | :-- |
@@ -101,7 +101,7 @@ $container->waitForAll(?float $timeout = null): array;
 ```php
 $container->yieldEachOne(?float $timeout = null): \Generator;
 ```
-- `$timeout` 超时时间，超时后函数会直接抛出`SerendipitySwow\Archer\Exception\TaskTimeoutException`（该时间表示花费在本方法内的时间，外界调用该方法处理每个返回值所耗费的时间不计入）。注意：超时返回后所有Task仍会继续执行，不会中断，不会移出队列。若缺省则表示不会超时
+- `$timeout` 超时时间，超时后函数会直接抛出`SwowCloud\Archer\Exception\TaskTimeoutException`（该时间表示花费在本方法内的时间，外界调用该方法处理每个返回值所耗费的时间不计入）。注意：超时返回后所有Task仍会继续执行，不会中断，不会移出队列。若缺省则表示不会超时
 - 生成器遍历完成后，可以通过 `Generator->getReturn()` 方法获取返回值的键值对
 
 | 返回模式 | 异常处理 |
@@ -119,26 +119,26 @@ $container->getErrorMap(): array;
 
 ### 在Task内获取当前的Taskid
 ```php
-\SerendipitySwow\Archer\Task::getCurrentTaskId(): ?int;
+\SwowCloud\Archer\Task::getCurrentTaskId(): ?int;
 ```
 在Task执行中，调用该方法可以获取当前的Taskid，在其他地方调用会返回null（该方法基于协程uid缓存）
 
 ### 终止事件循环
 调用此方法以防止循环使得进程事件循环不能结束
 ```php
-\SerendipitySwow\Archer\Queue::stop(): void;
-\SerendipitySwow\Archer\TimerHeap::stop(): void;
+\SwowCloud\Archer\Queue::stop(): void;
+\SwowCloud\Archer\TimerHeap::stop(): void;
 ```
 
 ### ~~注册一个全局回调函数~~
 `Swow>=4.2.9`版本推荐在项目使用Context的时候通过[Coroutine::defer()](https://wiki.Swow.com/wiki/page/1015.html)注册清理函数，无需在此注册
 ```php
-\SerendipitySwow\Archer\Task::registerTaskFinishFunc(callable $func): void;
+\SwowCloud\Archer\Task::registerTaskFinishFunc(callable $func): void;
 ```
 ~~这里注册的回调函数会在每个Task结束时执行，不论Task是否抛出了异常，不论Task模式，格式如下：~~
 ```php
 function (int $task_id, $task_return_value, ?\Throwable $e) {
-    // $task_id 为\SerendipitySwow\Archer::task()或\SerendipitySwow\Archer\MultiTask->addTask() 返回的Task id。\SerendipitySwow\Archer::taskWait()由于无法获取Taskid，所以可以忽略该项。
+    // $task_id 为\SwowCloud\Archer::task()或\SwowCloud\Archer\MultiTask->addTask() 返回的Task id。\SwowCloud\Archer::taskWait()由于无法获取Taskid，所以可以忽略该项。
     // $task_return_value 为Task闭包 $task_callback 的返回值，若没有返回值或抛出了异常，则该项为null
     // $e为Task闭包 $task_callback 中抛出的异常，正常情况下为null
 }
@@ -150,8 +150,8 @@ function (int $task_id, $task_return_value, ?\Throwable $e) {
 
 ## 配置
 ```php
-\SerendipitySwow\Archer\Queue::setQueueSize(int $size): void;
-\SerendipitySwow\Archer\Queue::setConcurrent(int $concurrent): void;
+\SwowCloud\Archer\Queue::setQueueSize(int $size): void;
+\SwowCloud\Archer\Queue::setConcurrent(int $concurrent): void;
 ```
 - 队列的size，默认为8192。当待执行的Task数量超过size时，再投递Task会导致协程切换，直到待执行的Task数量小于size后才可恢复
 - 最大并发数concurrent，默认为2048，表示同时处于执行状态的Task的最大数量。
@@ -159,20 +159,20 @@ function (int $task_id, $task_return_value, ?\Throwable $e) {
 
 ## 异常
 Archer会抛出以下几种异常：
-- `SerendipitySwow\Archer\Exception\AddNewTaskFailException` 将task加入队列时发生错误，由 \Swow\Coroutine\Channel->pop 报错引起，这往往是由内核错误导致的
-- `SerendipitySwow\Archer\Exception\RuntimeException` Archer内部状态错误，通常由用户错误地调用了底层函数引起
-- `SerendipitySwow\Archer\Exception\TaskTimeoutException` Task超时，因用户在某些地方设置了`timeout`，Task排队+执行时间超过了该时间引发的异常。用户应该在需要设置`timeout`的地方捕获这个异常以完成超时逻辑。注意Task执行时间超时不会引起Task中断或被移出队列。
+- `SwowCloud\Archer\Exception\AddNewTaskFailException` 将task加入队列时发生错误，由 \Swow\Coroutine\Channel->pop 报错引起，这往往是由内核错误导致的
+- `SwowCloud\Archer\Exception\RuntimeException` Archer内部状态错误，通常由用户错误地调用了底层函数引起
+- `SwowCloud\Archer\Exception\TaskTimeoutException` Task超时，因用户在某些地方设置了`timeout`，Task排队+执行时间超过了该时间引发的异常。用户应该在需要设置`timeout`的地方捕获这个异常以完成超时逻辑。注意Task执行时间超时不会引起Task中断或被移出队列。
 
 ## 例子
 ###### *假设所有场景均已处于协程环境之中；场景都是理想化，简易化的；除了例子中使用的闭包，Archer支持所有[callable类型](http://php.net/manual/zh/language.types.callable.php)
 #### 场景：执行某些协程Client（或由[Runtime::enableCoroutine()](https://wiki.Swow.com/wiki/page/965.html)变为协程的传统Client）时，未开启或无法开启[Defer特性](https://wiki.Swow.com/wiki/page/p-coroutine_multi_call.html)，但又想使用Defer功能。
 ```php
-$task_redis = \SerendipitySwow\Archer\Archer::taskDefer(function() {
+$task_redis = \SwowCloud\Archer\Archer::taskDefer(function() {
     $redis = new \Swow\Coroutine\Redis();
     $redis->connect('127.0.0.1', 6379);
     return $redis->get('key');
 });
-$task_mysql = \SerendipitySwow\Archer\Archer::taskDefer(function() {
+$task_mysql = \SwowCloud\Archer\Archer::taskDefer(function() {
     $mysql = new \Swow\Coroutine\MySQL();
     $mysql->connect([
         'host' => '127.0.0.1',
@@ -182,7 +182,7 @@ $task_mysql = \SerendipitySwow\Archer\Archer::taskDefer(function() {
     ]);
     return $mysql->query('select sleep(1)');
 });
-$task_http = \SerendipitySwow\Archer\Archer::taskDefer(function(string $url): string {
+$task_http = \SwowCloud\Archer\Archer::taskDefer(function(string $url): string {
     $httpclient = new \Swow\Coroutine\Http\Client('0.0.0.0', 9599);
     $httpclient->setHeaders(['Host' => "api.mp.qq.com"]);
     $httpclient->set(['timeout' => 1]);
@@ -195,7 +195,7 @@ var_dump($task_http->recv());
 ```
 #### 场景：并发20条SQL并一起获取返回值
 ```php
-$container = \SerendipitySwow\Archer\Archer::getMultiTask();
+$container = \SwowCloud\Archer\Archer::getMultiTask();
 $task_callback = function(int $id): int {
     $mysql = new Swow\Coroutine\MySQL();
     $mysql->connect([
@@ -228,7 +228,7 @@ for ($id=1; $id<=20; ++$id)
 ```
 #### 场景：并发20条SQL，并将结果发给20个用户，每条运行完就立刻发送。
 ```php
-$container = \SerendipitySwow\Archer\Archer::getMultiTask();
+$container = \SwowCloud\Archer\Archer::getMultiTask();
 $task_callback = function(int $id): int {
     $mysql = new Swow\Coroutine\MySQL();
     $mysql->connect([

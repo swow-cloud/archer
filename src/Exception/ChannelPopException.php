@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace SerendipitySwow\Archer\Exception;
+namespace SwowCloud\Archer\Exception;
 
 class ChannelPopException extends \RuntimeException
 {
